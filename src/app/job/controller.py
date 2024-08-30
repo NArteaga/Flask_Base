@@ -5,7 +5,6 @@ from src.libs.response import ok, error
 from datetime import datetime, timezone
 
 repository_job = JobRepository(client)
-
 @router.route('/job', methods=['GET'])
 def get_job():
   try:

@@ -24,7 +24,6 @@ class JobRepository():
     client.mapper_registry.map_imperatively(Job, self.job_table)
     
   def get_job(self):
-    print(dir(self))
     with self.session_factory() as session:
       jobs = session.query(Job).filter_by(deleted_at = None).all()
       result = []
@@ -43,9 +42,11 @@ class JobRepository():
     with self.session_factory() as session:
       try:
         data = Job.from_dict(job)
-        session.add(data)
+        result = session.add(data)
+        session.flush()
+        session.refresh(data)
         session.commit()
-        return job
+        return data.serealize()
       except Exception as e:
         raise Exceptions('Not created registered the job')
   
